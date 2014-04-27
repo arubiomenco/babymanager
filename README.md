@@ -1,4 +1,9 @@
-appengine-skeleton
-=============================
+Baby Manager App
+================
 
-This is a generated application from the appengine-skeleton archetype.
+Google App Engine
+
+JPA 2.0 - Data Nucleus
+JAXRS 2.0
+
+
