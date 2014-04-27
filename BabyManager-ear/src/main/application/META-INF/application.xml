@@ -3,7 +3,7 @@
   <display-name>appengine-modules-ear</display-name>
   <module>
     <web>
-      <web-uri>BabyManager-war-1.0-SNAPSHOT.war</web-uri>
+      <web-uri>BabyManager-war-0.5-SNAPSHOT.war</web-uri>
       <context-root>/BabyManager-war</context-root>
     </web>
   </module>
