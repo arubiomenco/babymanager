@@ -33,11 +33,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @IdClass(BabyPermissionId.class)
 public class BabyPermission implements Serializable {
     @Id
-    @Column(name="baby_id")
     private Key babyId;
     
     @Id
-    @Column(name="account_id")
     private String accountId;
     
     @Column(name = "can_modify")

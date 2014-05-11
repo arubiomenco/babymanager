@@ -48,7 +48,7 @@ public class Baby implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date birthDate;
     
-    @OneToMany(mappedBy = "babies")
+    @OneToMany(mappedBy = "baby")
     private List<BabyPermission> permissions;
 
     /**
