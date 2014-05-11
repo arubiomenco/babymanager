@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <!-- JAX RS -->
     <servlet>
+        <description>JAXRS - Jersey</description>
         <servlet-name>jaxrs-jersey</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
@@ -13,4 +15,37 @@
         <servlet-name>jaxrs-jersey</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+
+    
+    <!-- Spring Context Loader -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+
+    <!-- Security -->
+    <!--
+    <security-constraint>
+        <display-name>Rest Services</display-name>
+        <web-resource-collection>
+            <web-resource-name>rest_services</web-resource-name>
+            <url-pattern>/rest/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>All Logged In Roles</description>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+    -->
+    <security-constraint>
+        <display-name>Administration Site</display-name>
+        <web-resource-collection>
+            <web-resource-name>admin</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Admin Only</description>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 </web-app>
