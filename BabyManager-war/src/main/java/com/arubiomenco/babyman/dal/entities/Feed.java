@@ -50,7 +50,7 @@ public class Feed implements Serializable {
     
     @ManyToOne(optional = false)
     @Column(name="type_id")
-    private FeedType feedType;
+    private FeedType type;
     
     @Column(name = "amount", precision = 2, nullable = false)
     private double amount;
@@ -91,17 +91,17 @@ public class Feed implements Serializable {
     }
 
     /**
-     * @return the feedType
+     * @return the type
      */
-    public FeedType getFeedType() {
-        return feedType;
+    public FeedType getType() {
+        return type;
     }
 
     /**
-     * @param feedType the feedType to set
+     * @param type the type to set
      */
-    public void setFeedType(FeedType feedType) {
-        this.feedType = feedType;
+    public void setType(FeedType type) {
+        this.type = type;
     }
 
     /**
@@ -144,5 +144,13 @@ public class Feed implements Serializable {
      */
     public void setEnhancements(List<Enhancement> enhancements) {
         this.enhancements = enhancements;
+    }
+    
+    
+    @Override
+    public String toString() {
+        return "[ID: " + getId() + ", type: " + getType()+ ", amount: " + getAmount() 
+                + ", baby: " + getBaby() + ", enhancements: " + getEnhancements()+ ", time: " 
+                + getFeedTime() + "]";
     }
 }

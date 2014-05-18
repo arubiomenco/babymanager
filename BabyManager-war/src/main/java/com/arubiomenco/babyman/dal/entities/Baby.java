@@ -18,9 +18,10 @@ package com.arubiomenco.babyman.dal.entities;
 
 import com.google.appengine.api.datastore.Key;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,12 +45,16 @@ public class Baby implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
     
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date birthDate;
     
-    @OneToMany(mappedBy = "baby")
-    private List<BabyPermission> permissions;
+    @Column ( name = "creation_date", nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date creationDate;
+    
+    @OneToMany(mappedBy = "baby", cascade = CascadeType.ALL)
+    private Set<BabyPermission> permissions;
 
     /**
      * @return the id
@@ -94,20 +99,27 @@ public class Baby implements Serializable {
     }
 
     /**
-     * @return the permissions
+     * @return the creationDate
      */
-    public List<BabyPermission> getPermissions() {
-        if (permissions == null){
-            permissions = new ArrayList<BabyPermission>();
-        }
-        return permissions;
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
     
     /**
-     * @param permissions the permissions to set
+     * @return the permissions
      */
-    public void setPermissions(List<BabyPermission> permissions) {
-        this.permissions = permissions;
+    public Set<BabyPermission> getPermissions() {
+        if (permissions == null){
+            permissions = new HashSet<BabyPermission>();
+        }
+        return permissions;
     }
     
 
@@ -118,5 +130,10 @@ public class Baby implements Serializable {
         permission.setCanModify(modify);
         
         getPermissions().add(permission);
+    }
+    
+    @Override
+    public String toString() {
+        return "[ID: " + getId() + ", name: " + getName() + ", birthDate: " + getBirthDate() + ", creationDate: " + getCreationDate() + "]";
     }
 }

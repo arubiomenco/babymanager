@@ -16,13 +16,17 @@
 
 package com.arubiomenco.babyman.dal.entities;
 
+import com.google.appengine.api.datastore.Key;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -33,9 +37,16 @@ public class Account implements Serializable {
     @Id
     @Column(name="id", length = 100)
     private String id;
+    
+    @Column(name = "creation_date", nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date creationDate;
        
-    @OneToMany(mappedBy = "account")
-    private List<BabyPermission> babies;
+    @Transient
+    private Set<BabyPermission> babies;
+    
+    @Basic
+    private Set<Key> permissionKeys;
 
     /**
      * @return the id
@@ -51,20 +62,52 @@ public class Account implements Serializable {
         this.id = id;
     }
 
+    
     /**
-     * @return the babies
+     * @return the creationDate
      */
-    public List<BabyPermission> getBabies() {
-        if (babies == null){
-            babies = new ArrayList<BabyPermission>();
-        }
-        return babies;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
     /**
-     * @param babies the babies to set
+     * @param creationDate the creationDate to set
      */
-    public void setBabies(List<BabyPermission> babies) {
-        this.babies = babies;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+    
+    /**
+     * @return the babies
+     */
+    public Set<BabyPermission> getBabies() {
+        if (babies == null){
+            babies = new HashSet<BabyPermission>();
+        }
+        return babies;
+    }
+    
+    public void addBaby ( Baby baby, boolean modify ){
+        BabyPermission permission = new BabyPermission();
+        permission.setAccount(this);
+        permission.setBaby( baby );
+        permission.setCanModify(modify);
+        
+        getBabies().add(permission);
+    }
+
+    /**
+     * @return the permissionKeys
+     */
+    public Set<Key> getPermissionKeys() {
+        if (permissionKeys == null){
+            permissionKeys = new HashSet<Key>();
+        }
+        return permissionKeys;
+    }
+
+    @Override
+    public String toString() {
+        return "[ID: " + getId() + ", creationDate: " + getCreationDate() + "]";
     }
 }

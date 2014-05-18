@@ -20,61 +20,44 @@ import com.google.appengine.api.datastore.Key;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
 
 /**
  *
  * @author Angel
  */
 @Entity
-@IdClass(BabyPermissionId.class)
 public class BabyPermission implements Serializable {
     @Id
-    private Key babyId;
-    
-    @Id
-    private String accountId;
-    
-    @Column(name = "can_modify")
-    private boolean canModify;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Key permissionId;
     
     @ManyToOne
     @PrimaryKeyJoinColumn(name = "baby_id", referencedColumnName = "id")
     private Baby baby;
+
+    @Column(name = "can_modify")
+    private boolean canModify;
     
-    @ManyToOne
-    @PrimaryKeyJoinColumn(name = "account_id", referencedColumnName = "id")
+    @Column (name = "account_id")
+    private String accountId;
+    
+    @Transient    
     private Account account;
+    
+    
 
-    /**
-     * @return the babyId
-     */
-    public Key getBabyId() {
-        return babyId;
-    }
-
-    /**
-     * @param babyId the babyId to set
-     */
-    public void setBabyId(Key babyId) {
-        this.babyId = babyId;
-    }
 
     /**
      * @return the accountId
      */
     public String getAccountId() {
         return accountId;
-    }
-
-    /**
-     * @param accountId the accountId to set
-     */
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
     }
 
     /**
@@ -116,7 +99,26 @@ public class BabyPermission implements Serializable {
      * @param account the account to set
      */
     public void setAccount(Account account) {
+        if (account != null){
+            this.accountId = account.getId();
+        }else{
+            this.accountId = null;
+        }
         this.account = account;
+    }
+
+    /**
+     * @return the permissionId
+     */
+    public Key getPermissionId() {
+        return permissionId;
+    }
+
+    /**
+     * @param permissionId the permissionId to set
+     */
+    public void setPermissionId(Key permissionId) {
+        this.permissionId = permissionId;
     }
     
     

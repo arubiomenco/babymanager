@@ -142,7 +142,11 @@ public class Enhancement implements Serializable {
     public void setFeed(Feed feed) {
         this.feed = feed;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "[ID: " + getId() + ", type: " + getType()+ ", amount: " + getAmount() 
+                + ", baby: " + getBaby() + ", feed: " + getFeed() + ", time: " 
+                + getEnhancementTime() + "]";
+    }
 }
