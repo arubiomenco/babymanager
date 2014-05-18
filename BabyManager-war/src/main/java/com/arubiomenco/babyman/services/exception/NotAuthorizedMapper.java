@@ -15,6 +15,7 @@
  */
 package com.arubiomenco.babyman.services.exception;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
@@ -22,8 +23,10 @@ import javax.ws.rs.ext.ExceptionMapper;
  *
  * @author Angel
  */
-public class NotAuthorizedMapper implements ExceptionMapper<NotAuthorizedException>{
+public class NotAuthorizedMapper implements ExceptionMapper<NotAuthorizedException> {
+
     public Response toResponse(NotAuthorizedException e) {
-       return Response.status( Response.Status.UNAUTHORIZED ).entity( e.getMessage() ).type("application/json").build();
+        HttpError error = new HttpError(e.getMessage(), e.getStatus().getStatusCode());
+        return Response.status(e.getStatus()).entity(error).type(MediaType.APPLICATION_JSON).build();
     }
 }

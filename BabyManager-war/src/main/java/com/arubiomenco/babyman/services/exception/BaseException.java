@@ -15,15 +15,30 @@
  */
 package com.arubiomenco.babyman.services.exception;
 
-import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author Angel
  */
-public class NotAuthorizedException extends BaseException{
-    
-    public NotAuthorizedException ( String message ){
-        super ( Status.UNAUTHORIZED, message );
+public class BaseException extends WebApplicationException{
+    private final String message;
+    private final Response.Status status;
+
+    public BaseException ( Response.Status status, String message ) {
+        super ( status );
+        this.status = status;
+        this.message = message;
     }
+
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+    
+    public Response.Status getStatus(){
+        return status;
+    }
+    
 }

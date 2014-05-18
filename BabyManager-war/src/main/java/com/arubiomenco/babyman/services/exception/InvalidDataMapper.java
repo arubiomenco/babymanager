@@ -15,15 +15,18 @@
  */
 package com.arubiomenco.babyman.services.exception;
 
-import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
 
 /**
  *
  * @author Angel
  */
-public class NotAuthorizedException extends BaseException{
-    
-    public NotAuthorizedException ( String message ){
-        super ( Status.UNAUTHORIZED, message );
+public class InvalidDataMapper implements ExceptionMapper<InvalidDataException> {
+
+    public Response toResponse(InvalidDataException e) {
+        HttpError error = new HttpError(e.getMessage(), e.getStatus().getStatusCode());
+        return Response.status(e.getStatus()).entity(error).type(MediaType.APPLICATION_JSON).build();
     }
 }
