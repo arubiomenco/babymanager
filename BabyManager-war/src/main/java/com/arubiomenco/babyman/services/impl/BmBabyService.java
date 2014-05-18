@@ -19,12 +19,11 @@ import com.arubiomenco.babyman.dal.IAccountsDao;
 import com.arubiomenco.babyman.dal.IBabiesDao;
 import com.arubiomenco.babyman.dal.entities.Account;
 import com.arubiomenco.babyman.dal.entities.Baby;
-import com.arubiomenco.babyman.dal.entities.BabyPermission;
 import com.arubiomenco.babyman.services.IBabyService;
 import com.arubiomenco.babyman.services.IServiceFactory;
 import com.arubiomenco.babyman.services.sdo.BmBaby;
-import com.arubiomenco.babyman.services.sdo.BmUser;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,7 +41,7 @@ public class BmBabyService extends BmBaseService<IBabiesDao, Long, Baby, BmBaby>
     }
 
     public Baby toOriginal(BmBaby target) {
-        return null;
+        return BmBaby.toBaby(target);
     }
 
     public List<BmBaby> listBabies(String accountId) {
@@ -61,11 +60,33 @@ public class BmBabyService extends BmBaseService<IBabiesDao, Long, Baby, BmBaby>
     public void create ( BmBaby bmBaby, String userId ){
         IAccountsDao accountsDao = getServiceFactory().getUserService().getDao();
         Account account = accountsDao.findById(userId);
+        if (account == null){
+            account = new Account();
+            account.setId(userId);
+            account.setCreationDate( new Date() );
+            accountsDao.persist(account);
+        }
         
+        bmBaby.setCreationDate( new Date() );
         Baby baby = toOriginal(bmBaby);
         baby.addPermission(account, true);
                 
         getDao().persist(baby);
     }
+    
+    public boolean canModify (BmBaby baby, String userId ){
+        return true;
+    }
 
+    public void update(BmBaby bmBaby ) {
+        Baby baby = toOriginal(bmBaby);
+        
+        baby = getDao().findById(baby.getId());
+        if (baby != null){
+            baby.setBirthDate( bmBaby.getBirthDate() );
+            baby.setName( bmBaby.getName() );
+            
+            getDao().persist(baby);
+        }
+    }
 }

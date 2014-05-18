@@ -32,7 +32,7 @@ import org.springframework.stereotype.Repository;
 public class BabiesDao extends JpaDao<Key, Baby> implements IBabiesDao{
 
     public List<Baby> listBabiesByAccount(Account account) {
-        Query q = em.createQuery("SELECT b FROM Baby b JOIN b.permissions p WHERE p.account.id = :account_id");
+        Query q = em.createQuery("SELECT b FROM Baby b JOIN b.permissions p WHERE p.accountId = :account_id");
         q.setParameter("account_id", account.getId());
         return (List<Baby>) q.getResultList();
     }

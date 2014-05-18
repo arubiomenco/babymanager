@@ -24,10 +24,13 @@ import java.util.List;
  *
  * @author Angel
  */
-public interface IBabyService extends IService<IBabiesDao, Long, Baby, BmBaby>{
+public interface IBabyService extends IService<IBabiesDao, Long, Baby, BmBaby> {
 
     List<BmBaby> listBabies(String accountId);
 
     void create(BmBaby bmBaby, String userId);
-    
+
+    void update(BmBaby bmBaby);
+
+    boolean canModify(BmBaby baby, String userId);
 }
